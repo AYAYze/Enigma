@@ -1,3 +1,11 @@
-import { a } from './Enigma/plugBoard';
+import plugBoard from './Enigma/plugBoard';
 
-console.log(a);
+let pb = new plugBoard();
+
+let str = {
+    text : "H"
+}
+
+pb.keyboardToPlug(str);
+
+console.log(str);

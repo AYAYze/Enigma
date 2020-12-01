@@ -1,4 +1,36 @@
 class Rotor {
+    private memory : {
+        rotor : Array<string>,
+        selectRotor : Array<string>,
+        rotateFlag : Array<string>,
+        notch : Array<number>,
+        encodeRotor : Array<string>
+    } = {
+        rotor : [
+            "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
+            "AJDKSIRUXBLHWTMCQGZNPYFVOE",
+            "BDFHJLCPRTXVZNYEIWGAKMUSQO",
+            "ESOVPZJAYQUIRHXLNFTGKDCMWB",
+            "VZBRGITYUPSDNHLXAWMJQOFECK",
+            "JPGVOUMFYQBENHZRDKASXLICTW",
+            "NZJHGRCXMYSWBOUFAIVLPEKQDT",
+            "FKQHTLXOCBJSPDZRAMEWNIUYGV"
+        ],
+        selectRotor : [
+            "0", 
+            "0", 
+            "0"
+        ],
+        rotateFlag : new Array(3),
+        notch : [
+            18,6,23,11,1,14,14,14
+        ],
+        encodeRotor : [
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            "BCDEFGHIJKLMNOPQRSTUVWXYZA"
+        ]
+    };
 
     private rotor : Array<string> = [
         "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
@@ -40,9 +72,9 @@ class Rotor {
         for(let i = 0; i < 3; i++){
             let n = rotorIn[i];
             while(n - 1) {
-                this.selectRotor[i] = this.reverseRotate(this.selectRotor[i])
+                this.reverseRotate(this.selectRotor[i])
                 
-                this.encodeRotor[i] = this.rotate(this.encodeRotor[i])
+                this.rotate(this.encodeRotor[i])
                 n--;
             }
             this.rotateFlag[i] = this.selectRotor[i][this.notch[i] - 1];
@@ -54,21 +86,21 @@ class Rotor {
         for(let i = 0; i < 3; i++){
             let tmp : number = n[i];
             while(tmp - 1){
-                this.selectRotor[i] = this.rotate(this.selectRotor[i]);
+                this.rotate(this.selectRotor[i]);
                 tmp--;
             }
         }
     }
     plugToRotor(alpha : {text:string}) : void {
-        this.selectRotor[2] = this.rotate(this.selectRotor[2]);
+        this.rotate(this.selectRotor[2]);
         console.log('d ' + this.selectRotor[2])
-        this.encodeRotor[2] = this.reverseRotate(this.encodeRotor[2]);
+        this.reverseRotate(this.encodeRotor[2]);
         if(this.selectRotor[2][0] == this.rotateFlag[2]){
-            this.selectRotor[1] = this.rotate(this.selectRotor[1]);
-            this.encodeRotor[1] = this.reverseRotate(this.encodeRotor[1]);
+            this.rotate(this.selectRotor[1]);
+            this.reverseRotate(this.encodeRotor[1]);
             if(this.selectRotor[1][0] == this.rotateFlag[1]) {
-                this.selectRotor[0] = this.rotate(this.selectRotor[0]);
-                this.encodeRotor[0] = this.reverseRotate(this.encodeRotor[0]);
+                this.rotate(this.selectRotor[0]);
+                this.reverseRotate(this.encodeRotor[0]);
             }
         }
         alpha.text = this.encodeRotor[2][this.selectRotor[2][alpha.text.charCodeAt(0) - 65].charCodeAt(0) - 65]
@@ -86,7 +118,7 @@ class Rotor {
         alpha.text = this.encodeWord(this.selectRotor[2], this.encodeRotor[2], alpha.text)
         console.log(`rotor3 : ${alpha.text}`);
     }
-    rotate(rotor : string) : string{
+    rotate(rotor : string) : void{
         for(let i = 0; i < 25; i++){
             let temp : string;
             let tempRotor = Array.from(rotor);
@@ -94,10 +126,10 @@ class Rotor {
             tempRotor[i] = tempRotor[i + 1];
             tempRotor[i + 1] = temp;
 
-            return rotor = tempRotor.join('');
+            rotor = tempRotor.join('');
         }
     }
-    reverseRotate(rotor : string) : string{
+    reverseRotate(rotor : string) : void{
         for(let i = 25; i > 0; i--){
             let temp : string;
             let tempRotor = Array.from(rotor);
@@ -105,7 +137,7 @@ class Rotor {
             tempRotor[i] = tempRotor[i - 1];
             tempRotor[i - 1] = temp;
 
-            return rotor = tempRotor.join('');
+            rotor = tempRotor.join('');
         }
     }
     encodeWord(rotor : string , encodeRotor : string, alpha : string):string {

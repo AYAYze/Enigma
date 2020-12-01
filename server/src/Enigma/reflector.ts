@@ -8,3 +8,5 @@ class Reflector {
         console.log(`Reflector : ${alpha.text}`)
     }
 }
+
+export default Reflector
